@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="LongBCH"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="C:/Users/ADMIN23/Desktop/Cantor-Zassenhaus-algorithm/LongBCH/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/ADMIN23/Desktop/Cantor-Zassenhaus-algorithm/LongBCH/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/ADMIN23/Desktop/Cantor-Zassenhaus-algorithm/LongBCH/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/ADMIN23/Desktop/Cantor-Zassenhaus-algorithm/LongBCH/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/ADMIN23/Desktop/Cantor-Zassenhaus-algorithm/LongBCH/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="LongBCH">
+				<Option output="C:/Users/ADMIN23/Desktop/Cantor-Zassenhaus-algorithm/LongBCH/cmake-build-debug/LongBCH.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/ADMIN23/Desktop/Cantor-Zassenhaus-algorithm/LongBCH/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/tools/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/14.2.0/../../../../include/c++/14.2.0"/>
+					<Add directory="C:/tools/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/14.2.0/../../../../include/c++/14.2.0/x86_64-w64-mingw32"/>
+					<Add directory="C:/tools/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/14.2.0/../../../../include/c++/14.2.0/backward"/>
+					<Add directory="C:/tools/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/14.2.0/include"/>
+					<Add directory="C:/tools/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/14.2.0/../../../../include"/>
+					<Add directory="C:/tools/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/14.2.0/include-fixed"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/ADMIN23/Desktop/Cantor-Zassenhaus-algorithm/LongBCH/cmake-build-debug/Makefile&quot;  VERBOSE=1 LongBCH"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/ADMIN23/Desktop/Cantor-Zassenhaus-algorithm/LongBCH/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/ADMIN23/Desktop/Cantor-Zassenhaus-algorithm/LongBCH/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/ADMIN23/Desktop/Cantor-Zassenhaus-algorithm/LongBCH/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="LongBCH/fast">
+				<Option output="C:/Users/ADMIN23/Desktop/Cantor-Zassenhaus-algorithm/LongBCH/cmake-build-debug/LongBCH.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/ADMIN23/Desktop/Cantor-Zassenhaus-algorithm/LongBCH/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/tools/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/14.2.0/../../../../include/c++/14.2.0"/>
+					<Add directory="C:/tools/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/14.2.0/../../../../include/c++/14.2.0/x86_64-w64-mingw32"/>
+					<Add directory="C:/tools/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/14.2.0/../../../../include/c++/14.2.0/backward"/>
+					<Add directory="C:/tools/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/14.2.0/include"/>
+					<Add directory="C:/tools/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/14.2.0/../../../../include"/>
+					<Add directory="C:/tools/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/14.2.0/include-fixed"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/ADMIN23/Desktop/Cantor-Zassenhaus-algorithm/LongBCH/cmake-build-debug/Makefile&quot;  VERBOSE=1 LongBCH/fast"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/ADMIN23/Desktop/Cantor-Zassenhaus-algorithm/LongBCH/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/ADMIN23/Desktop/Cantor-Zassenhaus-algorithm/LongBCH/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/ADMIN23/Desktop/Cantor-Zassenhaus-algorithm/LongBCH/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="C:/Users/ADMIN23/Desktop/Cantor-Zassenhaus-algorithm/LongBCH/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/ADMIN23/Desktop/Cantor-Zassenhaus-algorithm/LongBCH/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/ADMIN23/Desktop/Cantor-Zassenhaus-algorithm/LongBCH/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/ADMIN23/Desktop/Cantor-Zassenhaus-algorithm/LongBCH/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/ADMIN23/Desktop/Cantor-Zassenhaus-algorithm/LongBCH/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="C:/Users/ADMIN23/Desktop/Cantor-Zassenhaus-algorithm/LongBCH/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/ADMIN23/Desktop/Cantor-Zassenhaus-algorithm/LongBCH/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/ADMIN23/Desktop/Cantor-Zassenhaus-algorithm/LongBCH/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/ADMIN23/Desktop/Cantor-Zassenhaus-algorithm/LongBCH/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/ADMIN23/Desktop/Cantor-Zassenhaus-algorithm/LongBCH/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="C:/Users/ADMIN23/Desktop/Cantor-Zassenhaus-algorithm/LongBCH/Algorthms.cpp">
+			<Option target="LongBCH"/>
+		</Unit>
+		<Unit filename="C:/Users/ADMIN23/Desktop/Cantor-Zassenhaus-algorithm/LongBCH/Algorthms.h">
+			<Option target="LongBCH"/>
+		</Unit>
+		<Unit filename="C:/Users/ADMIN23/Desktop/Cantor-Zassenhaus-algorithm/LongBCH/GFq.cpp">
+			<Option target="LongBCH"/>
+		</Unit>
+		<Unit filename="C:/Users/ADMIN23/Desktop/Cantor-Zassenhaus-algorithm/LongBCH/GFq.h">
+			<Option target="LongBCH"/>
+		</Unit>
+		<Unit filename="C:/Users/ADMIN23/Desktop/Cantor-Zassenhaus-algorithm/LongBCH/Polinomial.cpp">
+			<Option target="LongBCH"/>
+		</Unit>
+		<Unit filename="C:/Users/ADMIN23/Desktop/Cantor-Zassenhaus-algorithm/LongBCH/Polynomial.h">
+			<Option target="LongBCH"/>
+		</Unit>
+		<Unit filename="C:/Users/ADMIN23/Desktop/Cantor-Zassenhaus-algorithm/LongBCH/Tree.cpp">
+			<Option target="LongBCH"/>
+		</Unit>
+		<Unit filename="C:/Users/ADMIN23/Desktop/Cantor-Zassenhaus-algorithm/LongBCH/Tree.h">
+			<Option target="LongBCH"/>
+		</Unit>
+		<Unit filename="C:/Users/ADMIN23/Desktop/Cantor-Zassenhaus-algorithm/LongBCH/Utils.cpp">
+			<Option target="LongBCH"/>
+		</Unit>
+		<Unit filename="C:/Users/ADMIN23/Desktop/Cantor-Zassenhaus-algorithm/LongBCH/Utils.h">
+			<Option target="LongBCH"/>
+		</Unit>
+		<Unit filename="C:/Users/ADMIN23/Desktop/Cantor-Zassenhaus-algorithm/LongBCH/main.cpp">
+			<Option target="LongBCH"/>
+		</Unit>
+		<Unit filename="C:/Users/ADMIN23/Desktop/Cantor-Zassenhaus-algorithm/LongBCH/testing.cpp">
+			<Option target="LongBCH"/>
+		</Unit>
+		<Unit filename="C:/Users/ADMIN23/Desktop/Cantor-Zassenhaus-algorithm/LongBCH/testing.h">
+			<Option target="LongBCH"/>
+		</Unit>
+		<Unit filename="C:/Users/ADMIN23/Desktop/Cantor-Zassenhaus-algorithm/LongBCH/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>
