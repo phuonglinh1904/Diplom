@@ -19,5 +19,7 @@ add_executable(LongBCH main.cpp
         Utils.cpp
         Tree.h
         Tree.cpp
+        BCH.h
+        BCH.cpp
 )
 target_link_libraries(LongBCH PRIVATE ${GMPXX_LIBRARY} ${GMP_LIBRARY})

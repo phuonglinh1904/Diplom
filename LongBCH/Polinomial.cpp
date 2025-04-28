@@ -341,28 +341,14 @@ Polynomial Polynomial::mul_alpha(const Polynomial &a, mpz_class lambda) {
     return Polynomial(b);
 }
 
-Polynomial Polynomial:: f_lambda(const int lambda) const {
-    vector<mpz_class> f_lambda_coeffs(this->get_degree() + 1);
-    for(size_t i = 0; i <= this->get_degree(); i++){
-        f_lambda_coeffs[i] = gf_power(this->coeff[i], lambda);
-    }
-    return Polynomial(f_lambda_coeffs);
-}
-Polynomial Polynomial::compose(const Polynomial& g) const {
-    Polynomial result = Polynomial({this->coeff[0]});
-    Polynomial temp = Polynomial(vector<mpz_class>{1});
-    for (int i = 1; i <= this->get_degree(); ++i) {
-        temp = Polynomial::mul(temp, g);
-
-        if (this->coeff[i] != 0) {
-            result = Polynomial::add(result, Polynomial::mul_alpha(temp, this->coeff[i]));
-        }
-    }
-
-    return result;
-}
-
-
-std::vector<mpz_class> Polynomial::get_coeff() {
+std::vector<mpz_class> Polynomial::get_coeff() const {
     return coeff;
+}
+
+mpz_class Polynomial :: calcPoly(const Polynomial &a, mpz_class x) {
+    auto res = a.coeff.back();
+    for (int j = a.get_degree() - 1; j >= 0 && j <= a.get_degree(); --j) {
+        res = a.coeff[j] ^ gf_multiply(x, res);
+    }
+    return res;
 }

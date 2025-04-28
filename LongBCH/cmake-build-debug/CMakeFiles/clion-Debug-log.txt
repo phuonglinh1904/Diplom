@@ -11,6 +11,6 @@
 -- Check for working CXX compiler: C:/tools/msys64/mingw64/bin/g++.exe - skipped
 -- Detecting CXX compile features
 -- Detecting CXX compile features - done
--- Configuring done (6.1s)
+-- Configuring done (5.6s)
 -- Generating done (0.0s)
 -- Build files have been written to: C:/Users/ADMIN23/Documents/Cantor-Zassenhaus-algorithm/LongBCH/cmake-build-debug

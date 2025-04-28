@@ -13,7 +13,6 @@ using namespace std;
 
 class Polynomial {
 private:
-    vector<mpz_class> coeff;
 
     void prune();
 
@@ -21,6 +20,8 @@ private:
     static std::pair<Polynomial, Polynomial> div_internal(const Polynomial &a, const Polynomial &b, const mpz_class& q);
 
 public:
+
+    vector<mpz_class> coeff;
     Polynomial() {};
 
     Polynomial(vector<mpz_class> coeff) : coeff(coeff) {};
@@ -39,10 +40,6 @@ public:
 
     Polynomial zip(const int degree, const mpz_class& q) const;
 
-    Polynomial f_lambda(const int lambda) const;
-
-    Polynomial compose(const Polynomial & g) const;
-
     static Polynomial add(const Polynomial &a, const Polynomial &b);
 
     static Polynomial mul(const Polynomial &a, const Polynomial &b);
@@ -54,7 +51,7 @@ public:
     static Polynomial mul_alpha(const Polynomial &a, mpz_class lambda);
 
     // new function
-    std::vector<mpz_class> get_coeff();
+    std::vector<mpz_class> get_coeff() const;
 
     static Polynomial get_one();
 
@@ -72,6 +69,7 @@ public:
 
     friend bool operator!=(const Polynomial &poly1, const Polynomial &poly2);
     Polynomial normalize() const;
+    static mpz_class calcPoly(const Polynomial &a, mpz_class x);
 };
 
 

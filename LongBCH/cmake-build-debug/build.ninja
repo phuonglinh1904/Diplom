@@ -105,6 +105,14 @@ build CMakeFiles/LongBCH.dir/Tree.cpp.obj: CXX_COMPILER__LongBCH_unscanned_Debug
   TARGET_COMPILE_PDB = CMakeFiles\LongBCH.dir\
   TARGET_PDB = LongBCH.pdb
 
+build CMakeFiles/LongBCH.dir/BCH.cpp.obj: CXX_COMPILER__LongBCH_unscanned_Debug C$:/Users/ADMIN23/Documents/Cantor-Zassenhaus-algorithm/LongBCH/BCH.cpp || cmake_object_order_depends_target_LongBCH
+  DEP_FILE = CMakeFiles\LongBCH.dir\BCH.cpp.obj.d
+  FLAGS = -g -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\LongBCH.dir
+  OBJECT_FILE_DIR = CMakeFiles\LongBCH.dir
+  TARGET_COMPILE_PDB = CMakeFiles\LongBCH.dir\
+  TARGET_PDB = LongBCH.pdb
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target LongBCH
@@ -113,7 +121,7 @@ build CMakeFiles/LongBCH.dir/Tree.cpp.obj: CXX_COMPILER__LongBCH_unscanned_Debug
 #############################################
 # Link the executable LongBCH.exe
 
-build LongBCH.exe: CXX_EXECUTABLE_LINKER__LongBCH_Debug CMakeFiles/LongBCH.dir/main.cpp.obj CMakeFiles/LongBCH.dir/Polinomial.cpp.obj CMakeFiles/LongBCH.dir/GFq.cpp.obj CMakeFiles/LongBCH.dir/Algorthms.cpp.obj CMakeFiles/LongBCH.dir/testing.cpp.obj CMakeFiles/LongBCH.dir/Utils.cpp.obj CMakeFiles/LongBCH.dir/Tree.cpp.obj | C$:/tools/msys64/mingw64/lib/libgmpxx.a C$:/tools/msys64/mingw64/lib/libgmp.a
+build LongBCH.exe: CXX_EXECUTABLE_LINKER__LongBCH_Debug CMakeFiles/LongBCH.dir/main.cpp.obj CMakeFiles/LongBCH.dir/Polinomial.cpp.obj CMakeFiles/LongBCH.dir/GFq.cpp.obj CMakeFiles/LongBCH.dir/Algorthms.cpp.obj CMakeFiles/LongBCH.dir/testing.cpp.obj CMakeFiles/LongBCH.dir/Utils.cpp.obj CMakeFiles/LongBCH.dir/Tree.cpp.obj CMakeFiles/LongBCH.dir/BCH.cpp.obj | C$:/tools/msys64/mingw64/lib/libgmpxx.a C$:/tools/msys64/mingw64/lib/libgmp.a
   FLAGS = -g
   LINK_LIBRARIES = C:/tools/msys64/mingw64/lib/libgmpxx.a  C:/tools/msys64/mingw64/lib/libgmp.a  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\LongBCH.dir
