@@ -64,6 +64,13 @@ int Polynomial::get_degree() const {
     return this->coeff.size() - 1;
 }
 
+Polynomial::Polynomial(std::initializer_list<mpz_class> list) : coeff(list) {}
+
+size_t Polynomial::memory_usage() const {
+    return sizeof(Polynomial) + sizeof(mpz_class) * coeff.size();
+}
+
+
 std::string Polynomial::to_string(std::string default_variable_name) const {
     int degree = this->coeff.size() - 1;
     std::string result = "";
@@ -76,12 +83,12 @@ std::string Polynomial::to_string(std::string default_variable_name) const {
         }
 
         if (this->coeff[i] != 1 || i == 0) {
-            result += this->coeff[i].get_str(); // Chuyển số lớn sang chuỗi
+            result += this->coeff[i].get_str();
         }
         if (i != 0) {
             result += default_variable_name;
             if (i != 1) {
-                result += "^" + std::to_string(i);; // Chuyển chỉ số lớn sang chuỗi
+                result += "^" + std::to_string(i);
             }
         }
     }

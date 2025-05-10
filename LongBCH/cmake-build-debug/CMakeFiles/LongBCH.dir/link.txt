@@ -1,0 +1,3 @@
+"C:\Program Files\JetBrains\CLion 2023.2.2\bin\cmake\win\x64\bin\cmake.exe" -E rm -f CMakeFiles\LongBCH.dir/objects.a
+C:\tools\msys64\mingw64\bin\ar.exe qc CMakeFiles\LongBCH.dir/objects.a @CMakeFiles\LongBCH.dir\objects1.rsp
+C:\tools\msys64\mingw64\bin\g++.exe -g -Wl,--whole-archive CMakeFiles\LongBCH.dir/objects.a -Wl,--no-whole-archive -o LongBCH.exe -Wl,--out-implib,libLongBCH.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\LongBCH.dir\linkLibs.rsp

@@ -175,165 +175,8 @@ vector<Polynomial> equal_degree_factorization_by_Shoup(const Polynomial &poly, i
     return U;
 }
 
-const string CNT_NODE_FAILED = "Nodes_failed";
-const string CNT_SUM_NODES = "Sum_nodes_recursive";
-map<string, int> dict = {
-    {"Nodes_failed", 0},
-    {"Sum_nodes_recursive", 0}
-};
-
-// hàm thêm hoặc sửa phần tử trong map nếu nó đã tồn tại
-void add_to_map(std::map<string, int> &dict, string key, int value) {
-    if (dict.find(key) != dict.end()) {
-        dict[key] += value;
-    } else {
-        dict[key] = value;
-    }
-}
-
-std::vector<Polynomial>
-separate(const Polynomial &g, const Polynomial &s_trace, int degree, const mpz_class &q) {
-
-    if (g.get_degree() == degree) {
-        return {g};
-    }
-//    else {
-//        add_to_map(dict, CNT_SUM_NODES, 1);
-//    }
-
-    Polynomial s = Polynomial::mod(s_trace, g, q);
-    if (s.is_zero()) {
-        return equal_degree_factorization_by_Ben_Or(g, degree, q);
-    }
-
-    const int max_attempts = 20;
-    int attempts_loop = 0;
-
-    while (true) {
-        if (++attempts_loop > max_attempts) {
-            // cout << "sum loops: " << attempts_loop << endl;
-//            cout << "Failed at: " << g << endl;
-
-//            add_to_map(dict, CNT_NODE_FAILED, 1);
-
-            return equal_degree_factorization_by_Ben_Or(g, degree, q);
-        }
-        mpz_class delta = 1 + rand() % (q.get_ui() - 1); // Chọn delta ngẫu nhiên từ GF(q)
-        // cout <<"delta:"<< delta << endl;
-        Polynomial delta_s = Polynomial::mul_alpha(s, delta);
-
-        // T(delta * s(x))
-        Polynomial T = T_m(delta_s, g, m.get_ui(), q);
-
-        // Gọi hàm GCD có đếm số lần gọi
-        Polynomial g1 = gcd_with_count(g, T, q);
-        //cout << "GCD: " << g1 << endl;
-        if (!g1.is_one() && g1.get_degree() != g.get_degree()) {
-//            add_to_map(dict, to_string(attempts_loop), 1);
-
-            auto g2 = div_with_count(g, g1, q);
-            auto result1 = separate(g1, s, degree, q);
-            if (result1.empty()) {
-                return {};
-            }
-            auto result2 = separate(g2, s, degree, q);
-            if (result2.empty()) {
-                return {};
-            }
-            result1.insert(result1.end(), result2.begin(), result2.end());
-            return result1;
-        }
-    }
-}
-
-vector<Polynomial>
-equal_degree_factorization_by_Ben_Or(const Polynomial &poly, int degree, const mpz_class &q) {
-    if (poly.get_degree() == degree) {
-        return vector<Polynomial>({poly});
-    }
-
-    Polynomial y = Polynomial::get_random_polynomial(poly.get_degree() - 1, q.get_ui());
-    Polynomial s = trace(y, poly, degree, q);
-
-    if (s.get_degree() == 0) {
-        return equal_degree_factorization_by_Ben_Or(poly, degree, q);
-    }
-
-    return separate(poly, s, degree, q);
-}
-
-vector<Polynomial>
-equal_degree_factorization_by_Cantor(const Polynomial &poly, int degree, const mpz_class &q) {
-    if (poly.get_degree() == degree) {
-        return vector<Polynomial>({poly});
-    }
-
-    vector<Polynomial> result;
-
-    Polynomial g = Polynomial::get_one();
-    Polynomial genpol = Polynomial(vector<mpz_class>{0});
-    int kd = m.get_ui() * degree;
-    const int max_attempts = 10000;
-    int attempts_loop = 0;
-    while (g.is_one() || g == poly) {
-        if (++attempts_loop > max_attempts) {
-            std::cerr << "Cantor error! " << max_attempts << " attempts." << std::endl;
-            return {};
-        }
-        int deg = poly.get_degree() - 1;
-        genpol = Polynomial::get_random_polynomial(deg, q.get_ui());
-        auto gp = Polynomial::mod(genpol, poly, q.get_ui());
-        g = gcd_with_count(gp, poly, q);  // Thay gcd bằng gcd_with_count
-        if (g.is_one()) {
-            Polynomial h = Polynomial(vector<mpz_class>{0});
-            Polynomial t2;
-            for (size_t j = 1; j < kd; j++) {
-                int t = 2;
-                t2 = powmod(gp, t, poly, q.get_ui());
-                h = Polynomial::mod(Polynomial::add(h, t2), poly, q.get_ui());
-            }
-            g = gcd_with_count(h, poly, q);  // Thay gcd bằng gcd_with_count
-        }
-    }
-    auto g2 = div_with_count(poly, g, q.get_ui());  // Thay Polynomial::div bằng div_with_count
-    auto r1 = equal_degree_factorization_by_Cantor(g, degree, q);
-    if (r1.empty()) {
-        return {};
-    }
-    auto r2 = equal_degree_factorization_by_Cantor(g2, degree, q);
-    if (r2.empty()) {
-        return {};
-    }
-    result.insert(result.end(), r1.begin(), r1.end());
-    result.insert(result.end(), r2.begin(), r2.end());
-
-    return result;
-}
 
 
-vector<Polynomial> factor_square_free(bool flag, const Polynomial &poly, const mpz_class &q) {
-    vector<Polynomial> result;
-
-    auto distDeg = distinct_degree_factorization(poly, q);
-
-    for (auto t: distDeg) {
-        if (flag) {
-            auto r1 = equal_degree_factorization_by_Ben_Or(t.first, t.second, q);
-            if (r1.empty()) {
-                return {};
-            }
-            result.insert(result.end(), r1.begin(), r1.end());
-        } else {
-            auto r1 = equal_degree_factorization_by_Cantor(t.first, t.second, q);
-            if (r1.empty()) {
-                return {};
-            }
-            result.insert(result.end(), r1.begin(), r1.end());
-        }
-    }
-
-    return result;
-}
 
 vector<Polynomial> factor_square_free_by_Shoup(const Polynomial &poly, const mpz_class &q) {
     vector<Polynomial> result;
@@ -352,31 +195,7 @@ vector<Polynomial> factor_square_free_by_Shoup(const Polynomial &poly, const mpz
     return result;
 }
 
-vector<pair<Polynomial, int>> factor(bool flag, const Polynomial &poly, const mpz_class &q, int &time) {
-    chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
 
-    vector<pair<Polynomial, int>> result;
-
-    vector<pair<Polynomial, int>> sqrfree = square_free_decomposition(poly, q);
-
-    for (auto const &value: sqrfree) {
-        auto r1 = factor_square_free(flag, value.first, q);
-        if (r1.empty()) {
-            //std::cerr << "Factor polynomial failure." << std::endl;+
-            return {};
-        }
-        for (size_t i = 0; i < r1.size(); i++) {
-            result.push_back({r1[i], value.second});
-        }
-    }
-
-    chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
-    // save time
-    time = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count();
-    cout << "Computation time = " << time << "[ms]" << std::endl;
-
-    return result;
-}
 
 vector<pair<Polynomial, int>> factor_by_Shoup_Algorithm(const Polynomial &poly, const mpz_class &q, int &time) {
     chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
@@ -405,30 +224,31 @@ vector<pair<Polynomial, int>> factor_by_Shoup_Algorithm(const Polynomial &poly, 
 
 
 //=======================================================================================================
-vector<pair<Polynomial, mpz_class>> find_root_by_Mignotte(const Polynomial& f, const mpz_class& q, int &time) {
-//    chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
-
+vector<pair<Polynomial, mpz_class>> find_root_by_Mignotte(const Polynomial& f, const mpz_class& q, int &time, size_t &total_memory) {
+    chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
     mpz_class chi = q - 1;
 
     vector<Polynomial> hs;
     hs.push_back(Polynomial("x"));
-
+    total_memory += hs[0].memory_usage();
     for (size_t i = 0; i < pi.size() - 1; ++i) {
         Polynomial hi = powmod(hs[i], pi[i], f, q);
         hs.push_back(hi);
+        total_memory += hi.memory_usage();
     }
     vector<pair<Polynomial, mpz_class>> F = {make_pair(f, 0)};
+    total_memory += f.memory_usage();
 
     for (int i = pi.size() - 1; i >= 0; i--) {
         vector<Polynomial> polynomials;
         for (const auto& pair : F) {
             polynomials.push_back(pair.first);
+            total_memory += pair.first.memory_usage();
         }
-
         auto root = buildSubproductTree(polynomials, 0, polynomials.size() - 1);
         vector<Polynomial> remainders;
         computeRemainders(hs[i], root, remainders, q);
-
+        total_memory += remainders.back().memory_usage() * remainders.size();
         vector<pair<Polynomial, mpz_class>> G;
         for (mpz_class j = 0; j < pi[i]; ++j) {
             int index = 0;
@@ -445,34 +265,128 @@ vector<pair<Polynomial, mpz_class>> find_root_by_Mignotte(const Polynomial& f, c
                 if (gj.get_degree() >= 1) {
                     auto gj_ = gj.normalize();
                     G.push_back({gj_, v});
+                    total_memory += gj_.memory_usage();
                 }
                 index++;
             }
         }
-
+        size_t G_memory = 0;
+        for (const auto& pair : G) {
+            G_memory += pair.first.memory_usage();
+        }
+        total_memory += G_memory;
         F = G;
         if (F.size() == f.get_degree()) break;
     }
 
-//    chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
-//    time = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count();
-//    cout << "Computation time = " << time << "[ms]" << std::endl;
+    chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+    time = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count();
+    cout << "Computation time = " << time << "[ms]" << std::endl;
+    cout << "Total memory used in find_root_by_Mignotte: " << total_memory << " bytes" << std::endl;
     return F;
 }
+std::vector<Polynomial>
+separate(const Polynomial &g, const Polynomial &s_trace, int degree, const mpz_class &q, size_t &total_memory) {
+    if (g.get_degree() == degree) {
+        return {g};
+    }
 
-vector<Polynomial> find_root_by_Ben_Or(const Polynomial &poly, const mpz_class &q, int &time) {
+    Polynomial s = Polynomial::mod(s_trace, g, q);
+    total_memory += s.memory_usage();
+    if (s.is_zero()) {
+        auto result = equal_degree_factorization_by_Ben_Or(g, degree, q, total_memory);
+        size_t result_memory = 0;
+        for (const auto &res : result) {
+            result_memory += res.memory_usage();
+        }
+        total_memory += result_memory;
+        return result;
+    }
+
+    const int max_attempts = 20;
+    int attempts_loop = 0;
+
+    while (true) {
+        if (++attempts_loop > max_attempts) {
+            return equal_degree_factorization_by_Ben_Or(g, degree, q, total_memory);
+        }
+        mpz_class delta = 1 + rand() % (q.get_ui() - 1);
+        Polynomial delta_s = Polynomial::mul_alpha(s, delta);
+        total_memory += delta_s.memory_usage();
+        // T(delta * s(x))
+        Polynomial T = T_m(delta_s, g, m.get_ui(), q);
+        total_memory += T.memory_usage();
+        Polynomial g1 = gcd_with_count(g, T, q);
+        total_memory += g1.memory_usage();
+        if (!g1.is_one() && g1.get_degree() != g.get_degree()) {
+            auto g2 = div_with_count(g, g1, q);
+            total_memory += g2.memory_usage();
+            auto result1 = separate(g1, s, degree, q, total_memory);
+            if (result1.empty()) {
+                return {};
+            }
+            auto result2 = separate(g2, s, degree, q, total_memory);
+            if (result2.empty()) {
+                return {};
+            }
+            result1.insert(result1.end(), result2.begin(), result2.end());
+            size_t result_memory = 0;
+            for (const auto &res : result1) {
+                result_memory += res.memory_usage();
+            }
+            total_memory += result_memory;
+            return result1;
+        }
+    }
+}
+
+vector<Polynomial>
+equal_degree_factorization_by_Ben_Or(const Polynomial &poly, int degree, const mpz_class &q, size_t &total_memory) {
+    if (poly.get_degree() == degree) {
+        return vector<Polynomial>({poly});
+    }
+
+    Polynomial y = Polynomial::get_random_polynomial(poly.get_degree() - 1, q.get_ui());
+    total_memory += y.memory_usage();
+    Polynomial s = trace(y, poly, degree, q);
+    total_memory += s.memory_usage();
+    if (s.get_degree() == 0) {
+        return equal_degree_factorization_by_Ben_Or(poly, degree, q, total_memory);
+    }
+
+    auto result = separate(poly, s, degree, q, total_memory);
+    size_t result_memory = 0;
+    for (const auto &res : result) {
+        result_memory += res.memory_usage();
+    }
+    total_memory += result_memory;
+
+
+    return result;
+}
+
+vector<Polynomial> find_root_by_Ben_Or(const Polynomial &poly, const mpz_class &q, int &time, size_t &total_memory) {
     chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
-
+    total_memory += poly.memory_usage();
     Polynomial h("x");
+    total_memory += h.memory_usage();
     Polynomial href = h;
+    total_memory += href.memory_usage();
     h = powmod(h, q, poly, q);
+    total_memory += h.memory_usage();
     auto sbs = Polynomial::add(h, href);
+    total_memory += sbs.memory_usage();
     auto poly_with_root = gcd(sbs, poly, q);
-
+    total_memory += poly_with_root.memory_usage();
     vector<Polynomial> polys = {};
     if (poly_with_root.get_degree()) {
         try {
-            polys = equal_degree_factorization_by_Ben_Or(poly_with_root, 1, q);
+            polys = equal_degree_factorization_by_Ben_Or(poly_with_root, 1, q, total_memory);
+            size_t polys_memory = 0;
+            for (const auto &p : polys) {
+                polys_memory += p.memory_usage();
+            }
+            total_memory += polys_memory;
         } catch (const std::exception &e) {
                 cerr << "Exception occurred: " << e.what() << endl;
             polys.clear();
@@ -483,55 +397,30 @@ vector<Polynomial> find_root_by_Ben_Or(const Polynomial &poly, const mpz_class &
     // save time
     time = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count();
     cout << "Computation time = " << time << "[ms]" << std::endl;
-
-    string file_name = "result_of_degree" + to_string(poly.get_degree()) + ".csv";
-    std::ofstream output_file(file_name);
-    output_file << "Number of attempts,Count" << endl;
-    for (auto& i : dict) {
-        output_file << i.first << "," << i.second << endl;
-    }
-
+    cout << "Total memory used in find_root_by_Ben_Or: " << total_memory << " bytes" << endl;
     if (polys.empty()) return {};
     return polys;
 }
 
-vector<Polynomial> find_root_by_Cantor(const Polynomial &poly, const mpz_class &q, int &time) {
-    chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
-
-    Polynomial h("x");
-    Polynomial href = h;
-    h = powmod(h, q, poly, q);
-    auto sbs = Polynomial::add(h, href);
-    auto poly_with_root = gcd(sbs, poly, q);
-
-    vector<Polynomial> polys = {};
-    if (poly_with_root.get_degree()) {
-        try {
-            polys = equal_degree_factorization_by_Cantor(poly_with_root, 1, q);
-        } catch (const std::exception &e) {
-            cerr << "Exception occurred: " << e.what() << endl;
-            polys.clear();
-        }
-    }
-
-    chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
-    // save time
-    time = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count();
-    cout << "Computation time = " << time << "[ms]" << std::endl;
-    if (polys.empty()) return {};
-    return polys;
-}
 
 // =========================================================================================================================== //
 std::vector<Polynomial>
-separate_hybird(const Polynomial &g, const Polynomial &s_trace, int degree, int &cnt_failed, const mpz_class &q) {
+separate_hybird(const Polynomial &g, const Polynomial &s_trace, int degree, int &cnt_failed, const mpz_class &q, size_t &total_memory) {
     if (g.get_degree() == degree) {
         return {g};
     }
 
     Polynomial s = Polynomial::mod(s_trace, g, q);
+    total_memory += s.memory_usage();
     if (s.is_zero()) {
-        return equal_degree_factorization_by_hybird(g, degree, q);
+        auto result = equal_degree_factorization_by_hybird(g, degree, q, total_memory);
+        size_t result_memory = 0;
+        for (const auto &res : result) {
+            result_memory += res.memory_usage();
+        }
+        total_memory += result_memory;
+        std::cout << "Total memory used in separate_hybird (equal_degree_factorization): " << total_memory << " bytes" << std::endl;
+        return result;
     }
 
     const int max_failed = 5;
@@ -542,75 +431,104 @@ separate_hybird(const Polynomial &g, const Polynomial &s_trace, int degree, int 
         while (true) {
             if (++attempts_loop > max_attempts) {
                 int time;
-                auto results = find_root_by_Mignotte(g, q, time);
+                auto results = find_root_by_Mignotte(g, q, time, total_memory);
                 vector<Polynomial> polys = {};
                 for (auto &res : results) {
                     polys.push_back(res.first);
                 }
-                cnt_failed += 1;
+                size_t polys_memory = 0;
+                for (const auto &p : polys) {
+                    polys_memory += p.memory_usage();
+                }
+                total_memory += polys_memory;
 
+                cnt_failed += 1;
                 return polys;
             }
-            mpz_class delta = 1 + rand() % (q.get_ui() - 1); // Chọn delta ngẫu nhiên từ GF(q)
+            mpz_class delta = 1 + rand() % (q.get_ui() - 1);
             Polynomial delta_s = Polynomial::mul_alpha(s, delta);
-
+            total_memory += delta_s.memory_usage();
             // T(delta * s(x))
             Polynomial T = T_m(delta_s, g, m.get_ui(), q);
-
-            // Gọi hàm GCD có đếm số lần gọi
+            total_memory += T.memory_usage();
             Polynomial g1 = gcd_with_count(g, T, q);
+            total_memory += g1.memory_usage();
             if (!g1.is_one() && g1.get_degree() != g.get_degree()) {
-                // cout << "loops: " << attempts_loop << endl;
-                // Gọi hàm chia có đếm số lần gọi
                 auto g2 = div_with_count(g, g1, q);
-                auto result1 = separate_hybird(g1, s, degree, cnt_failed, q);
+                total_memory += g2.memory_usage();
+                auto result1 = separate_hybird(g1, s, degree, cnt_failed, q, total_memory);
                 if (result1.empty()) {
                     return {};
                 }
-                auto result2 = separate_hybird(g2, s, degree, cnt_failed, q);
+                auto result2 = separate_hybird(g2, s, degree, cnt_failed, q, total_memory);
                 if (result2.empty()) {
                     return {};
                 }
                 result1.insert(result1.end(), result2.begin(), result2.end());
+                size_t result_memory = 0;
+                for (const auto &res : result1) {
+                    result_memory += res.memory_usage();  // Đo bộ nhớ của kết quả
+                }
+                total_memory += result_memory;
                 return result1;
             }
         }
     }
     else {
         int time;
-        auto results = find_root_by_Mignotte(g, q, time);
+        auto results = find_root_by_Mignotte(g, q, time, total_memory);
         vector<Polynomial> polys = {};
         for (auto &res : results) {
             polys.push_back(res.first);
         }
+        size_t polys_memory = 0;
+        for (const auto &p : polys) {
+            polys_memory += p.memory_usage();
+        }
+        total_memory += polys_memory;
         return polys;
     }
 
 }
 
 vector<Polynomial>
-equal_degree_factorization_by_hybird(const Polynomial &poly, int degree, const mpz_class &q) {
+equal_degree_factorization_by_hybird(const Polynomial &poly, int degree, const mpz_class &q, size_t &total_memory) {
     int cnt_failed = 0;
     if (poly.get_degree() == degree) {
         return vector<Polynomial>({poly});
     }
 
     Polynomial y = Polynomial::get_random_polynomial(poly.get_degree() - 1, q.get_ui());
-    Polynomial s = trace(y, poly, degree, q);
+    total_memory += y.memory_usage();
 
+    Polynomial s = trace(y, poly, degree, q);
+    total_memory += s.memory_usage();
     if (s.get_degree() == 0) {
-        return equal_degree_factorization_by_hybird(poly, degree, q);
+        return equal_degree_factorization_by_hybird(poly, degree, q, total_memory);
     }
 
-    return separate_hybird(poly, s, degree, cnt_failed, q);
+    vector<Polynomial> result = separate_hybird(poly, s, degree, cnt_failed, q, total_memory);
+    size_t result_memory = 0;
+    for (const auto& p : result) {
+        result_memory += p.memory_usage();
+    }
+    total_memory += result_memory;
+    return result;
 }
 
-vector<Polynomial> find_root_by_hybrid(const Polynomial &poly, const mpz_class &q, int &time) {
+vector<Polynomial> find_root_by_hybrid(const Polynomial &poly, const mpz_class &q, int &time, size_t &total_memory) {
     chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
     vector<Polynomial> polys = {};
+    total_memory += poly.memory_usage();
     if (poly.get_degree()) {
         try {
-            polys = equal_degree_factorization_by_hybird(poly, 1, q);
+            polys = equal_degree_factorization_by_hybird(poly, 1, q, total_memory);
+            // Đo bộ nhớ của mảng polys
+            size_t polys_memory = 0;
+            for (const auto& p : polys) {
+                polys_memory += p.memory_usage();
+            }
+            total_memory += polys_memory;
         } catch (const std::exception &e) {
             cerr << "Exception occurred: " << e.what() << endl;
             polys.clear();
@@ -621,7 +539,7 @@ vector<Polynomial> find_root_by_hybrid(const Polynomial &poly, const mpz_class &
     // save time
     time = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count();
     cout << "Computation time = " << time << "[ms]" << std::endl;
-
+    cout << "Total memory used in find_root_by_hybrid: " << total_memory << " bytes" << endl;
     if (polys.empty()) return {};
     return polys;
 }
@@ -640,74 +558,3 @@ vector<mpz_class> find_root_by_chien(const Polynomial &poly, int &time) {
     return roots;
 }
 //=======================================================================================================
-vector<pair<Polynomial, mpz_class>> find_root_by_hybird_1(const Polynomial& g, const mpz_class& q, int &time) {
-    chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
-    Polynomial f = g.normalize();
-
-    mpz_class chi = q - 1;
-
-    vector<Polynomial> hs;
-    hs.push_back(Polynomial("x"));
-
-    for (size_t i = 0; i < pi.size() - 1; ++i) {
-        Polynomial hi = powmod(hs[i], pi[i], f, q);
-        hs.push_back(hi);
-    }
-    vector<pair<Polynomial, mpz_class>> F = {make_pair(f, 0)};
-
-    for (int i = pi.size() - 1; i >= 0; i--) {
-        // a. Tính hi-1 rem g cho mọi cặp (g, e) trong F sử dụng cây subproduct
-        vector<Polynomial> polynomials;
-        for (const auto& pair : F) {
-            polynomials.push_back(pair.first);
-        }
-
-        auto root = buildSubproductTree(polynomials, 0, polynomials.size() - 1);
-        vector<Polynomial> remainders;
-        computeRemainders(hs[i], root, remainders, q);
-
-        vector<pair<Polynomial, mpz_class>> G;
-
-        // cout << "  pi = " << pi[i] << endl;
-        for (mpz_class j = 0; j < pi[i]; ++j) {
-            int index = 0;
-            for (const auto& pair : F) {
-                //cout << "loop: " << index << endl;
-                const Polynomial& g = pair.first;
-
-                const mpz_class& e = pair.second;
-
-                // g_j = gcd(hi-1 rem g - ξ^(e + jχ)/π_i, g)
-                mpz_class v = (e + j*chi) / pi[i];
-                auto eps = deg_alpha[v.get_ui()];
-                Polynomial term = Polynomial({eps});
-                Polynomial subtracted = Polynomial::add(remainders[index], term);
-
-                Polynomial gj = gcd(subtracted, g, q);
-
-                if (gj.get_degree() > 1 && gj.get_degree() <= 5) {
-                    // call ben-or
-                    auto results = find_root_by_Ben_Or(gj, q, time);
-                    for (auto &res : results) {
-                        G.push_back({res, v});
-                    }
-                }
-                else if (gj.get_degree() == 1 ||  gj.get_degree() >= 6) {
-                    auto gj_ = gj.normalize();
-                    G.push_back({gj_, v});
-                }
-                index++;
-            }
-        }
-
-        F = G;
-        if (F.size() == f.get_degree()) break;
-    }
-
-    chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
-    // save time
-    time = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count();
-    cout << "Computation time = " << time << "[ms]" << std::endl;
-
-    return F;
-}

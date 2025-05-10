@@ -25,6 +25,8 @@ public:
     Polynomial() {};
 
     Polynomial(vector<mpz_class> coeff) : coeff(coeff) {};
+    Polynomial(std::initializer_list<mpz_class> list);
+    size_t memory_usage() const;
 
     Polynomial(std::string s);
 
