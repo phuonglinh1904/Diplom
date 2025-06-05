@@ -25,4 +25,8 @@ mpz_class gf_multiply(const mpz_class& a, const mpz_class& b);
 mpz_class gf_inverse(const mpz_class& a);
 mpz_class gf_add(const mpz_class &a, const mpz_class &b);
 mpz_class gf_power(const mpz_class &base, mpz_class exponent);
+mpz_class gf_square_root(const mpz_class &a, const mpz_class &q);
+// vector<mpz_class>gf_cube_root(const mpz_class &b, const mpz_class &q);
+mpz_class gf_cube_root(const mpz_class &a, const mpz_class &q, const mpz_class &g);
+mpz_class find_primitive_element();
 #endif //LONGBCH_GFQ_H

@@ -21,5 +21,6 @@ void compare_three_algo(const std::string &filename, const mpz_class &q);
 void analyze_factorization_algorithms(const std::string &output_filename, const mpz_class &q);
 void compare_Ben_Or_Mignotte_Hybird(const std::string &output_filename, const mpz_class &q);
 void get_statistics_attemps_in_node(const mpz_class &q);
-void compare_memory_usage_Ben_Or_Mignotte_Hybrid(const std::string &output_filename, const mpz_class &q);
+void check_success_Ben_Or_find_root(const std::string &output_filename, const mpz_class &q);
+string check_for_match(vector<Polynomial> &roots1, vector<Polynomial> &roots2);
 #endif //TESTING_H

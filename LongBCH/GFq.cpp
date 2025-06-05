@@ -88,4 +88,77 @@ mpz_class gf_power(const mpz_class &base, mpz_class exponent) {
     }
     return res;
 }
+mpz_class gcd(const mpz_class &a, const mpz_class &b){
+    mpz_class result;
+    mpz_gcd(result.get_mpz_t(), a.get_mpz_t(), b.get_mpz_t());
+    return result;
+}
 
+mpz_class gf_cube_root(const mpz_class &a, const mpz_class &q, const mpz_class &g) {
+    if (a == 0) {
+        return 0;
+    }
+
+    mpz_class r, y, x, g0, t, k;
+
+    // q ≡ 0 mod 3
+    if (q % 3 == 0) {
+        r = q / 3;
+        return gf_power(a, r);
+    }
+
+    //  q ≡ 2 mod 3
+    if (q % 3 == 2) {
+        mpz_class exp = (q - 2) / 3;
+        y = gf_power(a, exp);
+        return gf_inverse(y);
+    }
+
+    //  q ≡ 1 mod 3
+    g0 = gf_power(g, 3);
+    if (a == g0) {
+        return g;
+    }
+
+    mpz_class max_k = (q - 1) / 3;
+    for (k = 1; k <= max_k; ++k) {
+        t = gf_power(g0, k);
+        if (t == a) {
+            x = gf_power(g, k);
+            return x;
+        }
+    }
+
+    cout << "Input " << a << " is a cubic nonresidue in F_q" << endl;
+   return -1;
+}
+
+mpz_class gf_square_root(const mpz_class &a, const mpz_class &q){
+    mpz_class exp = q.get_ui() / 2;
+    return gf_power(a, exp);
+}
+
+mpz_class find_primitive_element() {
+    std::vector<mpz_class> primes = SieveOfEratosthenes();
+    std::vector<std::pair<mpz_class, mpz_class>> factors = modified_trial_division(primes);
+    std::vector<mpz_class> divisors;
+    for (const auto &p : factors) {
+        divisors.push_back(n.get_ui() / p.first);  // n / p_i
+    }
+
+    for (mpz_class i = 1; i < n; ++i) {
+        mpz_class g = deg_alpha[i.get_ui()];
+        bool is_primitive = true;
+        for (const auto &d : divisors) {
+            if (gf_power(g, d) == 1) {
+                is_primitive = false;
+                break;
+            }
+        }
+        if (is_primitive) {
+            return g;  //
+        }
+    }
+
+    throw std::runtime_error("No primitive element found.");
+}
